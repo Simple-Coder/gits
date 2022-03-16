@@ -10,10 +10,42 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>gray-gateway10001</artifactId>
-
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <gray.version>B.0.0.2</gray.version>
     </properties>
+
+    <dependencies>
+        <!--eureka client-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.springcloud.gray</groupId>
+            <artifactId>spring-cloud-starter-gray-client</artifactId>
+            <version>${gray.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-cloud-gray-plugin-webmvc</artifactId>
+                    <groupId>cn.springcloud.gray</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>cn.springcloud.gray</groupId>
+                    <artifactId>spring-cloud-gray-plugin-eureka</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.springcloud.gray</groupId>
+            <artifactId>spring-cloud-gray-plugin-gateway</artifactId>
+            <version>${gray.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
