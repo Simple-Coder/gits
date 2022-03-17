@@ -1,0 +1,42 @@
+server:
+  port: 9999
+
+spring:
+  profiles:
+    active: dev
+
+# 端点对外暴露
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+#开启灰度
+gray:
+  rule:
+    enabled: true
+ribbon:
+  rule:
+    gray-enabled: true
+# feign 相关配置
+feign:
+  sentinel:
+    enabled: true
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+  client:
+    config:
+      default:
+        connectTimeout: 20000
+        readTimeout: 20000
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
