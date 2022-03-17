@@ -5,6 +5,7 @@ spring:
   profiles:
     active: dev
 
+
 # 端点对外暴露
 management:
   endpoints:
@@ -40,3 +41,5 @@ feign:
       enabled: true
     response:
       enabled: true
+
+
