@@ -12,6 +12,8 @@ import org.springframework.cloud.client.loadbalancer.LoadBalancerProperties;
 import org.springframework.cloud.gateway.config.GatewayLoadBalancerProperties;
 import org.springframework.cloud.gateway.config.GatewayReactiveLoadBalancerClientAutoConfiguration;
 import org.springframework.cloud.gateway.filter.ReactiveLoadBalancerClientFilter;
+import org.springframework.cloud.loadbalancer.core.ReactorServiceInstanceLoadBalancer;
+import org.springframework.cloud.loadbalancer.support.LoadBalancerClientFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,14 +31,16 @@ import org.springframework.context.annotation.Configuration;
 public class GrayLoadBalancerClientConfiguration {
 
     @Bean
-    public ReactiveLoadBalancerClientFilter gatewayLoadBalancerClientFilter(GrayLoadBalancer grayLoadBalancer,
-                                                                            LoadBalancerProperties properties, GatewayLoadBalancerProperties loadBalancerProperties) {
-        return new GrayReactiveLoadBalancerClientFilter(loadBalancerProperties, properties, grayLoadBalancer);
+    public ReactiveLoadBalancerClientFilter gatewayLoadBalancerClientFilter
+            (GrayLoadBalancer grayLoadBalancer,
+             LoadBalancerClientFactory clientFactory,
+             LoadBalancerProperties properties,
+             GatewayLoadBalancerProperties loadBalancerProperties) {
+        return new GrayReactiveLoadBalancerClientFilter(loadBalancerProperties, clientFactory, properties, grayLoadBalancer);
     }
 
     @Bean
     public GrayLoadBalancer grayLoadBalancer(DiscoveryClient discoveryClient) {
         return new VersionGrayLoadBalancer(discoveryClient);
     }
-
 }

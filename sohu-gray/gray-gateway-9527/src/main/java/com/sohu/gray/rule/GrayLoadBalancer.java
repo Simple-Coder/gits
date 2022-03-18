@@ -3,6 +3,8 @@ package com.sohu.gray.rule;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * @InterfaceName: GrayLoadBalancer
  * @author: xiedong

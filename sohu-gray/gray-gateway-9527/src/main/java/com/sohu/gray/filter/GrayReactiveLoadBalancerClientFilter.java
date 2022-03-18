@@ -3,15 +3,16 @@ package com.sohu.gray.filter;
 import com.sohu.gray.rule.GrayLoadBalancer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.loadbalancer.DefaultResponse;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerProperties;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerUriTools;
+import org.springframework.cloud.client.loadbalancer.*;
 import org.springframework.cloud.gateway.config.GatewayLoadBalancerProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.ReactiveLoadBalancerClientFilter;
 import org.springframework.cloud.gateway.support.DelegatingServiceInstance;
 import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
+import org.springframework.cloud.loadbalancer.core.ReactorLoadBalancer;
+import org.springframework.cloud.loadbalancer.core.ReactorServiceInstanceLoadBalancer;
+import org.springframework.cloud.loadbalancer.support.LoadBalancerClientFactory;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,6 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.DefaultResponse;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerProperties;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerUriTools;
-import org.springframework.cloud.client.loadbalancer.Response;
 import org.springframework.cloud.gateway.config.GatewayLoadBalancerProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.ReactiveLoadBalancerClientFilter;
@@ -31,6 +31,8 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URI;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @ClassName: GrayReactiveLoadBalancerClientFilter
@@ -43,6 +45,8 @@ public class GrayReactiveLoadBalancerClientFilter extends ReactiveLoadBalancerCl
 
     private static final int LOAD_BALANCER_CLIENT_FILTER_ORDER = 10150;
 
+    private LoadBalancerClientFactory clientFactory;
+
     private GatewayLoadBalancerProperties loadBalancerProperties;
 
     private LoadBalancerProperties properties;
@@ -50,8 +54,9 @@ public class GrayReactiveLoadBalancerClientFilter extends ReactiveLoadBalancerCl
     private GrayLoadBalancer grayLoadBalancer;
 
     public GrayReactiveLoadBalancerClientFilter(GatewayLoadBalancerProperties loadBalancerProperties,
+                                                LoadBalancerClientFactory clientFactory,
                                                 LoadBalancerProperties properties, GrayLoadBalancer grayLoadBalancer) {
-        super(null, loadBalancerProperties, properties);
+        super(clientFactory, loadBalancerProperties, properties);
         this.properties = properties;
         this.grayLoadBalancer = grayLoadBalancer;
         this.loadBalancerProperties = loadBalancerProperties;
@@ -76,7 +81,8 @@ public class GrayReactiveLoadBalancerClientFilter extends ReactiveLoadBalancerCl
             log.trace(ReactiveLoadBalancerClientFilter.class.getSimpleName() + " url before: " + url);
         }
 
-        return choose(exchange).doOnNext(response -> {
+        DefaultRequest<RequestDataContext> lbRequest = new DefaultRequest(new RequestDataContext(new RequestData(exchange.getRequest()), "default"));
+        return choose(exchange, lbRequest).doOnNext(response -> {
 
             if (!response.hasServer()) {
                 throw NotFoundException.create(loadBalancerProperties.isUse404(),
@@ -104,7 +110,7 @@ public class GrayReactiveLoadBalancerClientFilter extends ReactiveLoadBalancerCl
         }).then(chain.filter(exchange));
     }
 
-    private Mono<Response<ServiceInstance>> choose(ServerWebExchange exchange) {
+    private Mono<Response<ServiceInstance>> choose(ServerWebExchange exchange, Request<RequestDataContext> lbRequest) {
         URI uri = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR);
         ServiceInstance serviceInstance = grayLoadBalancer.choose(uri.getHost(), exchange.getRequest());
         return Mono.just(new DefaultResponse(serviceInstance));
