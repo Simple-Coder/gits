@@ -9,64 +9,21 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>gray-gateway-9527</artifactId>
-
+    <artifactId>gray-client-low</artifactId>
     <properties>
-        <spring-boot.version>2.5.2</spring-boot.version>
-        <spring-cloud.version>2020.0.3</spring-cloud.version>
-        <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
+        <spring-boot.version>2.0.9.RELEASE</spring-boot.version>
+        <spring-cloud.version>Finchley.SR4</spring-cloud.version>
+        <spring-cloud-alibaba.version>2.0.0.RELEASE</spring-cloud-alibaba.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.version>3.8.1</maven.compiler.version>
-        <spring.checkstyle.version>0.0.28</spring.checkstyle.version>
-        <git.commit.version>2.2.5</git.commit.version>
         <spring-boot-admin.version>2.4.2</spring-boot-admin.version>
-        <hutool.version>5.7.3</hutool.version>
-        <captcha.version>1.2.7</captcha.version>
-        <swagger.fox.version>3.0.0</swagger.fox.version>
-        <knife4j.version>2.0.9</knife4j.version>
-        <velocity.version>1.7</velocity.version>
-        <lcn.version>4.1.0</lcn.version>
-        <jasypt.version>3.0.3</jasypt.version>
-        <ttl.version>2.11.4</ttl.version>
-        <ureport.version>2.2.9</ureport.version>
-        <aws.version>1.11.543</aws.version>
-        <xxl.job.version>2.3.0</xxl.job.version>
-        <activiti.version>5.22.0</activiti.version>
-        <docker.registry>172.17.0.111</docker.registry>
-        <docker.host>http://172.17.0.111:2375</docker.host>
-        <docker.namespace>library</docker.namespace>
-        <docker.username>admin</docker.username>
-        <docker.password>Harbor12345</docker.password>
-        <docker.plugin.version>0.33.0</docker.plugin.version>
-        <!--  默认忽略docker构建 -->
-        <docker.skip>false</docker.skip>
+        <spring.checkstyle.version>0.0.28</spring.checkstyle.version>
+        <guava.version>27.0.1-jre</guava.version>
     </properties>
 
     <dependencies>
-        <!--bootstrap 启动器-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
-        <!--配置文件处理器-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!--监控-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <!--监控客户端-->
-        <dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-starter-client</artifactId>
-            <version>${spring-boot-admin.version}</version>
-        </dependency>
         <!--Lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -79,23 +36,37 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <!--gateway 网关依赖,内置webflux 依赖-->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-gateway-server</artifactId>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+            <artifactId>spring-cloud-netflix-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.ribbon</groupId>
+            <artifactId>ribbon-eureka</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.ribbon</groupId>
+            <artifactId>ribbon-loadbalancer</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.ribbon</groupId>
+            <artifactId>ribbon-core</artifactId>
+            <optional>true</optional>
         </dependency>
         <!--eureka client-->
         <dependency>
@@ -103,15 +74,25 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>transmittable-thread-local</artifactId>
             <version>2.2.0</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.sohu</groupId>-->
-<!--            <artifactId>gray-client</artifactId>-->
-<!--            <version>1.0.0</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>1.5.22.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -178,30 +159,30 @@
                         </execution>
                     </executions>
                 </plugin>
-                <!--maven  docker 打包插件 -->
-                <plugin>
-                    <groupId>io.fabric8</groupId>
-                    <artifactId>docker-maven-plugin</artifactId>
-                    <version>${docker.plugin.version}</version>
-                    <configuration>
-                        <dockerHost>${docker.host}</dockerHost>
-                        <registry>${docker.registry}</registry>
-                        <authConfig>
-                            <push>
-                                <username>${docker.username}</username>
-                                <password>${docker.password}</password>
-                            </push>
-                        </authConfig>
-                        <images>
-                            <image>
-                                <name>${docker.registry}/${docker.namespace}/${project.name}:${project.version}</name>
-                                <build>
-                                    <dockerFile>${project.basedir}/Dockerfile</dockerFile>
-                                </build>
-                            </image>
-                        </images>
-                    </configuration>
-                </plugin>
+                <!--                &lt;!&ndash;maven  docker 打包插件 &ndash;&gt;-->
+                <!--                <plugin>-->
+                <!--                    <groupId>io.fabric8</groupId>-->
+                <!--                    <artifactId>docker-maven-plugin</artifactId>-->
+                <!--                    <version>${docker.plugin.version}</version>-->
+                <!--                    <configuration>-->
+                <!--                        <dockerHost>${docker.host}</dockerHost>-->
+                <!--                        <registry>${docker.registry}</registry>-->
+                <!--                        <authConfig>-->
+                <!--                            <push>-->
+                <!--                                <username>${docker.username}</username>-->
+                <!--                                <password>${docker.password}</password>-->
+                <!--                            </push>-->
+                <!--                        </authConfig>-->
+                <!--                        <images>-->
+                <!--                            <image>-->
+                <!--                                <name>${docker.registry}/${docker.namespace}/${project.name}:${project.version}</name>-->
+                <!--                                <build>-->
+                <!--                                    <dockerFile>${project.basedir}/Dockerfile</dockerFile>-->
+                <!--                                </build>-->
+                <!--                            </image>-->
+                <!--                        </images>-->
+                <!--                    </configuration>-->
+                <!--                </plugin>-->
             </plugins>
         </pluginManagement>
         <plugins>
@@ -223,12 +204,12 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-            <!--打包关联最新 git commit 信息插件-->
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <version>${git.commit.version}</version>
-            </plugin>
+            <!--            &lt;!&ndash;打包关联最新 git commit 信息插件&ndash;&gt;-->
+            <!--            <plugin>-->
+            <!--                <groupId>pl.project13.maven</groupId>-->
+            <!--                <artifactId>git-commit-id-plugin</artifactId>-->
+            <!--                <version>${git.commit.version}</version>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 

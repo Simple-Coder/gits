@@ -1,5 +1,6 @@
 package com.sohu.gray.filter;
 
+import com.sohu.gray.constant.CommonConstants;
 import com.sohu.gray.rule.GrayLoadBalancer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
@@ -106,6 +107,7 @@ public class GrayReactiveLoadBalancerClientFilter extends ReactiveLoadBalancerCl
             if (log.isTraceEnabled()) {
                 log.trace("LoadBalancerClientFilter url chosen: " + requestUrl);
             }
+
             exchange.getAttributes().put(ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR, requestUrl);
         }).then(chain.filter(exchange));
     }

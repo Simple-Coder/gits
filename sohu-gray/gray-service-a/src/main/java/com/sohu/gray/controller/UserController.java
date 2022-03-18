@@ -30,5 +30,4 @@ public class UserController {
         jsonObject.put("a", userService.getById(id));
         return jsonObject.toString();
     }
-
 }

@@ -3,6 +3,10 @@ server:
 spring:
   application:
     name: service-a
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
 eureka:
   client:
     #表示是否将自己注册到EurekaServer，默认为true
@@ -17,3 +21,7 @@ eureka:
     instance-id: ${spring.application.name}:${server.port}
     # 访问路径可以显示ip地址
     prefer-ip-address: true
+
+gray:
+  rule:
+    enabled: true

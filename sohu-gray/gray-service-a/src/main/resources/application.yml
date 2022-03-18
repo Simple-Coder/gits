@@ -22,3 +22,7 @@ feign:
   hystrix:
     # 在feign中开启Hystrix
     enabled: true
+
+gray:
+  rule:
+    enabled: true

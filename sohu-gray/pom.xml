@@ -18,6 +18,8 @@
         <module>gray-service-c</module>
         <module>gray-service-c1</module>
         <module>gray-eureka</module>
+        <module>gray-client-low</module>
+        <module>gray-client-low-feign</module>
     </modules>
 
 

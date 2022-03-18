@@ -6,6 +6,7 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.sohu.gray.constant.CommonConstants;
 import com.sohu.gray.rule.GrayLoadBalancer;
+import com.sohu.gray.util.NonWebVersionContextHolder;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
